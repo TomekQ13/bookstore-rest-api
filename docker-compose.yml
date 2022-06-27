@@ -1,0 +1,27 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:14'
+    restart: always
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - ./database:/var/lib/postgresql/data
+      - ./ddl:/ddl
+  app:
+    build:
+      context: .
+    volumes:
+      - ./app:/app
+    ports:
+      - '3000:3000'
+    depends_on:
+      - 'postgres'
+    environment:
+      - NODE_ENV
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_PORT
+      - POSTGRES_HOST
+      
