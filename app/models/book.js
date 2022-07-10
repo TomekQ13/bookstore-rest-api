@@ -1,5 +1,6 @@
 const client = require('../db')
 const InvalidArgumentError = require('../error')
+const { logger } = require('../loggers')
 
 const bookAttributesArray = ['id', 'author', 'price', 'description', 'year_published', 'added_dttm']
 const insertBookAttrbiutes = bookAttributesArray.slice(0, -1).join(', ')
@@ -42,7 +43,7 @@ async function getBooks({ limit, offset, sortBy, desc }) {
     try {
         results = await client.query(query, bindVariables)
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return undefined
     }
 
@@ -62,7 +63,7 @@ async function getBook({ bookId }) {
     try {
         results = await client.query(query, [bookId])
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return undefined
     }
 
@@ -90,7 +91,7 @@ function makeValidation(attribute, value) {
             validate(typeof value !== 'number' || value < 0, 'Year must be larger than 0')
             break
         default:
-            console.error('Unknown attribute value')
+            logger.error('Unknown attribute value')
     }
 }
 
@@ -108,7 +109,7 @@ async function addBook({ id, author, price, description, year_published }) {
             values ($1, $2, $3, $4, $5)
         `, [id, author, price, description, year_published])
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return undefined
     }
 
@@ -136,7 +137,7 @@ async function updateBook({ bookId, newAttributes }) {
     try {
         resp = await client.query(query, bindVariables)
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return undefined
     }
 
@@ -153,7 +154,7 @@ async function deleteBook({ bookId }) {
             where id = $1
         `, [bookId])
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return undefined
     }
     return resp

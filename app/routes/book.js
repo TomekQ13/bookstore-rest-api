@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid')
 
 const InvalidArgumentError = require('../error')
+const { logger } = require('../loggers')
 const { getBooks, getBook, addBook, updateBook, deleteBook } = require('../models/book')
 
 
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
     try {
         books = await getBooks({ limit, offset, sortBy, desc })
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         if (e instanceof InvalidArgumentError) return res.status(400).json({ message: e.message })
         return res.sendStatus(500)
     }
@@ -34,7 +35,7 @@ router.get('/:bookId', async (req, res) => {
     try {
         book = await getBook({ bookId })
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return res.sendStatus(500)
     }
 
@@ -57,7 +58,7 @@ router.post('/', async (req, res) => {
     try {        
         resp = await addBook({ id, author, price, description, year_published })
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         if (e instanceof InvalidArgumentError) return res.status(400).json({ message: e.message })
         return res.sendStatus(500)
     }
@@ -77,7 +78,7 @@ router.patch('/:bookId', async (req, res) => {
     try {
         resp = await updateBook({ bookId, newAttributes })
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         if (e instanceof InvalidArgumentError) return res.status(400).json({ message: e.message })
         return res.sendStatus(500)
     }
@@ -93,7 +94,7 @@ router.delete('/:bookId', async  (req, res) => {
     try {
         resp = await deleteBook({ bookId })
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return res.sendStatus(500)
     }
     if (resp.rowCount === 0) return res.sendStatus(404)

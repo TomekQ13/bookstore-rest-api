@@ -16,6 +16,7 @@ services:
       - ./app:/app
       - ./test:/test
       - ./ddl:/ddl
+      - ./testLogs:/logs
     depends_on:
       - 'postgres'
     environment:

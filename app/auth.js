@@ -1,3 +1,4 @@
+const { logger } = require("./loggers")
 const isApiKeyValid = require("./models/apiKey")
 
 async function checkApiKey(req, res, next) {
@@ -11,7 +12,7 @@ async function checkApiKey(req, res, next) {
     try {
         check = await isApiKeyValid({ apiKey })
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return res.sendStatus(500)
     }
     if (check === undefined) return res.sendStatus(500)

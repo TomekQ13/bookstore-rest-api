@@ -1,4 +1,5 @@
 const client = require("../db")
+const { logger } = require("../loggers")
 
 async function isApiKeyValid({ apiKey }) {
     if (typeof apiKey !== 'string') return undefined
@@ -12,7 +13,7 @@ async function isApiKeyValid({ apiKey }) {
                 and valid_to_dttm > now()
         `, [apiKey])
     } catch (e) {
-        console.error(e)
+        logger.error(e)
         return undefined
     }
 
