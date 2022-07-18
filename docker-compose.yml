@@ -25,4 +25,4 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_PORT
       - POSTGRES_HOST
-      
+      - EMAIL_PASS

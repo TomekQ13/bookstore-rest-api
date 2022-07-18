@@ -4,6 +4,7 @@ const expressWinston = require('express-winston')
 const bookRouter = require('./routes/book')
 const checkApiKey = require('./auth')
 const { logger, requestLogger } = require('./loggers')
+const { errorHandler } = require('./errorHandler')
 
 const app = express()
 
@@ -25,6 +26,8 @@ app.use('/book', bookRouter)
 app.use(expressWinston.errorLogger({
     winstonInstance: logger
 }))
+
+app.use(errorHandler)
 
 app.listen(3000)
 

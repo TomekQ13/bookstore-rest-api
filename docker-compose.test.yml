@@ -26,4 +26,5 @@ services:
       - POSTGRES_PORT
       - POSTGRES_HOST
       - TESTING_API_KEY
+      - EMAIL_PASS
       
