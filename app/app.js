@@ -1,10 +1,13 @@
 const express = require('express')
 const expressWinston = require('express-winston')
+const swaggerJsdoc = require("swagger-jsdoc")
+const swaggerUi = require("swagger-ui-express");
 
 const bookRouter = require('./routes/book')
 const checkApiKey = require('./auth')
 const { logger, requestLogger } = require('./loggers')
-const { errorHandler } = require('./errorHandler')
+const { errorHandler } = require('./errorHandler');
+const options = require('./swagger');
 
 const app = express()
 
@@ -28,6 +31,13 @@ app.use(expressWinston.errorLogger({
 }))
 
 app.use(errorHandler)
+
+const specs = swaggerJsdoc(options);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs)
+)
 
 app.listen(3000)
 

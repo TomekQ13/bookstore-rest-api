@@ -1,3 +1,4 @@
+                        
 const { v4: uuidv4 } = require('uuid')
 
 const InvalidArgumentError = require('../error')
@@ -6,7 +7,70 @@ const { getBooks, getBook, addBook, updateBook, deleteBook } = require('../model
 
 
 const router = require('express').Router()
+/** 
+* @swagger
+* components:
+*   schemas:
+*     Book:
+*       type: object
+*       required:
+*         - title
+*         - author
+*         - price
+*         - year_published
+*       properties:
+*         id:
+*           type: string
+*           description: 'The auto-generated UUID of the book'
+*         author:
+*           type: string
+*           description: 'The author of the book'
+*         price:
+*           type: integer
+*           description: 'The price of the book'
+*         description:
+*           type: string
+*           description: 'The description of the book'
+*         year_published:
+*           type: integer
+*           description: 'The year the book was published'
+*   responses:
+*     "400":
+*       description: Missing API key
+*       contents:
+*         application/json
+*     "401":
+*       description: 'Unauthorized - incorrect API key or incorrect format. Please use: Basic API_KEY'
+*       contents:
+*         application/json
+*
+*/ 
 
+/**
+ * @swagger
+ * tags:
+ *   name: Books
+ *   description: API to manage books
+ */
+
+/** 
+ * @swagger
+ *   /:
+ *     get:
+ *       summary: Get all books
+ *       tags: [Books]
+ *       responses:
+ *         "200":
+ *           description: The list of books
+ *           contents:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Book'
+ *         "400":
+ *           $ref: '#/components/responses/400'
+ *         "401":
+ *           $ref: '#/components/responses/401'
+ */
 router.get('/', async (req, res) => {
     const {
         limit, offset, sortBy
