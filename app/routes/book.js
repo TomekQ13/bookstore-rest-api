@@ -19,9 +19,6 @@ const router = require('express').Router()
 *         - price
 *         - year_published
 *       properties:
-*         id:
-*           type: string
-*           description: 'The auto-generated UUID of the book'
 *         author:
 *           type: string
 *           description: 'The author of the book'
@@ -43,6 +40,10 @@ const router = require('express').Router()
 *       description: 'Unauthorized - incorrect API key or incorrect format. Please use: Basic API_KEY'
 *       contents:
 *         application/json
+*     "404":
+*       description: 'Not found - the book was not found'
+*       contents:
+*         application/json
 *
 */ 
 
@@ -55,7 +56,7 @@ const router = require('express').Router()
 
 /** 
  * @swagger
- *   /:
+ *   /book:
  *     get:
  *       summary: Get all books
  *       tags: [Books]
@@ -92,6 +93,33 @@ router.get('/', async (req, res) => {
 
 })
 
+/** 
+ * @swagger
+ *   /book/{id}:
+ *     get:
+ *       summary: Get a book by id
+ *       tags: [Books]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: Id of a book
+ *       responses:
+ *         "200":
+ *           description: The book
+ *           contents:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Book'
+ *         "400":
+ *           $ref: '#/components/responses/400'
+ *         "401":
+ *           $ref: '#/components/responses/401'
+ *         "404":
+ *           $ref: '#/components/responses/404'
+ */
 router.get('/:bookId', async (req, res) => {
     const bookId = req.params.bookId
 
@@ -109,6 +137,28 @@ router.get('/:bookId', async (req, res) => {
     res.json(book)
 })
 
+/** 
+ * @swagger
+ *   /book:
+ *     post:
+ *       summary: Create a book
+ *       tags: [Books]
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       responses:
+ *         "400":
+ *           $ref: '#/components/responses/400'
+ *         "401":
+ *           $ref: '#/components/responses/401'
+ *         "201":
+ *           description: Book created successfully
+ *           contents:
+ *             application/json
+ */
 router.post('/', async (req, res) => {
     const {
         author,
@@ -130,7 +180,36 @@ router.post('/', async (req, res) => {
     if (resp === undefined) return res.sendStatus(500)
     res.status(201).json({ id, message: 'Book has been created' })
 })
-
+/** 
+ * @swagger
+ *   /book/{id}:
+ *     patch:
+ *       summary: Create a book
+ *       tags: [Books]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: Id of a book
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *               required:
+ *       responses:
+ *         "400":
+ *           $ref: '#/components/responses/400'
+ *         "401":
+ *           $ref: '#/components/responses/401'
+ *         "204":
+ *           description: Book updated successfully
+ *           contents:
+ *             application/json
+ */
 router.patch('/:bookId', async (req, res) => {
     const bookId = req.params.bookId
     if (bookId === undefined) return res.status(404).json({ message: 'BookId is missing' })
