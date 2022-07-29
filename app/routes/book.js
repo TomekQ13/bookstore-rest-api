@@ -7,45 +7,6 @@ const { getBooks, getBook, addBook, updateBook, deleteBook } = require('../model
 
 
 const router = require('express').Router()
-/** 
-* @swagger
-* components:
-*   schemas:
-*     Book:
-*       type: object
-*       required:
-*         - title
-*         - author
-*         - price
-*         - year_published
-*       properties:
-*         author:
-*           type: string
-*           description: 'The author of the book'
-*         price:
-*           type: integer
-*           description: 'The price of the book'
-*         description:
-*           type: string
-*           description: 'The description of the book'
-*         year_published:
-*           type: integer
-*           description: 'The year the book was published'
-*   responses:
-*     "400":
-*       description: Missing API key
-*       contents:
-*         application/json
-*     "401":
-*       description: 'Unauthorized - incorrect API key or incorrect format. Please use: Basic API_KEY'
-*       contents:
-*         application/json
-*     "404":
-*       description: 'Not found - the book was not found'
-*       contents:
-*         application/json
-*
-*/ 
 
 /**
  * @swagger
@@ -231,6 +192,29 @@ router.patch('/:bookId', async (req, res) => {
     res.sendStatus(204)
 })
 
+/** 
+ * @swagger
+ *   /book/{id}:
+ *     delete:
+ *       summary: Delete a book
+ *       tags: [Books]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: Id of a book
+ *       responses:
+ *         "400":
+ *           $ref: '#/components/responses/400'
+ *         "401":
+ *           $ref: '#/components/responses/401'
+ *         "204":
+ *           description: Book deleted successfully
+ *           contents:
+ *             application/json
+ */
 router.delete('/:bookId', async  (req, res) => {
     const bookId = req.params.bookId
     let resp
