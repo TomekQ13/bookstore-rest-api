@@ -17,7 +17,7 @@ const options = {
         schemas: {
             Book: {
                 type: 'object',
-                require: ['title', 'author', 'price', 'year_published'],
+                required: ['title', 'author', 'price', 'year_published'],
                 properties: {
                     author: {
                         type: 'string',
