@@ -14,8 +14,6 @@ const app = express()
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-app.use(checkApiKey)
-
 app.use(expressWinston.logger({
     winstonInstance: requestLogger,
     statusLevels: true
@@ -24,6 +22,8 @@ app.use(expressWinston.logger({
 expressWinston.requestWhitelist.push('body')
 expressWinston.responseWhitelist.push('body')
 
+
+bookRouter.use(checkApiKey)
 app.use('/book', bookRouter)
 
 app.use(expressWinston.errorLogger({

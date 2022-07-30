@@ -2,9 +2,6 @@ const { logger } = require("./loggers")
 const isApiKeyValid = require("./models/apiKey")
 
 async function checkApiKey(req, res, next) {
-    if (req.originalUrl.includes('/api-docs/')) {
-        return next()
-    }
     authHeader = req.headers['authorization']
     if (authHeader === undefined) {
         return res.status(400).json({ message: 'API Key is missing' })
