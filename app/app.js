@@ -4,7 +4,7 @@ const swaggerJsdoc = require("swagger-jsdoc")
 const swaggerUi = require("swagger-ui-express");
 
 const bookRouter = require('./routes/book')
-const checkApiKey = require('./auth')
+
 const { logger, requestLogger } = require('./loggers')
 const { errorHandler } = require('./errorHandler');
 const options = require('./swagger');
@@ -23,7 +23,7 @@ expressWinston.requestWhitelist.push('body')
 expressWinston.responseWhitelist.push('body')
 
 
-bookRouter.use(checkApiKey)
+
 app.use('/book', bookRouter)
 
 app.use(expressWinston.errorLogger({
