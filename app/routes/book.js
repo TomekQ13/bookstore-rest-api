@@ -4,9 +4,10 @@ const { v4: uuidv4 } = require('uuid')
 const InvalidArgumentError = require('../error')
 const { logger } = require('../loggers')
 const { getBooks, getBook, addBook, updateBook, deleteBook } = require('../models/book')
-
+const checkApiKey = require('../auth')
 
 const router = require('express').Router()
+router.use(checkApiKey)
 
 /**
  * @swagger
